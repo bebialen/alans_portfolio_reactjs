@@ -1,0 +1,8 @@
+{
+  "name": "IPhone 15 Mobile Portfolio",
+  "description": "A high-end, 3D interactive portfolio for a mobile developer featuring a functional iPhone 15 simulator.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
