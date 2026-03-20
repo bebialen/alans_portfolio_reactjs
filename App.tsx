@@ -8,11 +8,13 @@ import { Github, Linkedin, Twitter, Download, ChevronRight, LayoutGrid, History,
 import { PROJECTS_DATA, EXPERIENCE_DATA, ACHIEVEMENTS_DATA } from './constants';
 import HeroVisual from './components/HeroVisual';
 import ScrollReveal from './components/ScrollReveal';
-import { motion } from 'framer-motion';
+import LoadingScreen from './components/LoadingScreen';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
@@ -52,10 +54,18 @@ const App: React.FC = () => {
 
   return (
     <div className="w-full h-screen bg-[#050505] flex flex-col lg:flex-row relative overflow-hidden text-white">
-      {/* <HeroVisual /> */}
+      <LoadingScreen onComplete={() => setIsLoading(false)} />
 
-      {/* Desktop Navigation */}
-      <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] bg-zinc-900/40 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-full hidden lg:flex items-center gap-8">
+      <AnimatePresence>
+        {!isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            className="w-full h-full flex flex-col lg:flex-row"
+          >
+            {/* Desktop Navigation */}
+            <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] bg-zinc-900/40 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-full hidden lg:flex items-center gap-8">
         {navItems.map((item) => (
           <button
             key={item.id}
@@ -259,7 +269,9 @@ const App: React.FC = () => {
           © 2026 ALAN DEV. ALL RIGHTS RESERVED.
         </footer>
       </div>
-
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

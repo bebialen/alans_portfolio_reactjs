@@ -1,148 +1,197 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { Suspense, useMemo, useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { 
+  PerspectiveCamera, 
+  Environment, 
+  Float, 
+  ContactShadows, 
+  Html, 
+  MeshStandardMaterial,
+  RoundedBox,
+  Text
+} from '@react-three/drei';
+import * as THREE from 'three';
 
-const fragments = [
-  { label: 'View.onScroll', x: 80, y: 20, size: 'w-32 h-12' },
-  { label: '08:42', x: 90, y: 10, size: 'w-16 h-8' }, // Status bar feel
-  { label: 'Connect', x: 75, y: 60, size: 'w-24 h-24', rounded: 'rounded-full' }, // Floating Action Button
-  { label: '', x: 85, y: 40, size: 'w-40 h-56' }, // App Card
-];
+// --- Components ---
 
-const HeroVisual: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const mouseRef = useRef({ x: 0, y: 0, radius: 150 });
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let particles: { x: number; y: number; originX: number; originY: number; vx: number; vy: number }[] = [];
-
-    const init = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      particles = [];
-      const spacing = 40;
-      for (let x = canvas.width * 0.4; x < canvas.width; x += spacing) {
-        for (let y = 0; y < canvas.height; y += spacing) {
-          particles.push({
-            x, y, originX: x, originY: y, vx: 0, vy: 0
-          });
-        }
-      }
-    };
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      const mouse = mouseRef.current;
-      const gradient = ctx.createRadialGradient(
-        mouse.x, mouse.y, 0, 
-        mouse.x, mouse.y, mouse.radius * 1.5
-      );
-      gradient.addColorStop(0, 'rgba(59, 130, 246, 0.15)');
-      gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.beginPath();
-      ctx.lineWidth = 0.5;
-
-      particles.forEach((p, i) => {
-        const dx = mouse.x - p.x;
-        const dy = mouse.y - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        if (dist < mouse.radius) {
-          const force = (mouse.radius - dist) / mouse.radius;
-          p.vx -= dx * force * 0.03;
-          p.vy -= dy * force * 0.03;
-        }
-
-        p.vx += (p.originX - p.x) * 0.05;
-        p.vy += (p.originY - p.y) * 0.05;
-        p.vx *= 0.92;
-        p.vy *= 0.92;
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (i % 15 === 0) {
-          const opacity = dist < mouse.radius ? 0.4 : 0.1;
-          ctx.strokeStyle = `rgba(59, 130, 246, ${opacity})`;
-          ctx.lineTo(p.x, p.y);
-        }
-      });
-      
-      ctx.stroke();
-
-      particles.forEach((p, i) => {
-        if (i % 6 === 0) {
-          const dist = Math.sqrt((mouse.x - p.x) ** 2 + (mouse.y - p.y) ** 2);
-          
-          if (dist < mouse.radius) {
-            ctx.fillStyle = '#60a5fa';
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
-            ctx.fill();
-          } else if (i % 18 === 0) {
-            ctx.fillStyle = '#27272a';
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 1, 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
-      });
-
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current.x = e.clientX;
-      mouseRef.current.y = e.clientY;
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('resize', init);
-    window.addEventListener('mousemove', handleMouseMove);
-    init();
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', init);
-      window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
+const MacStudio = () => {
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-      <canvas 
-        ref={canvasRef} 
-        className="absolute top-0 right-0 w-full h-full opacity-60"
-        style={{ maskImage: 'linear-gradient(to left, black 40%, transparent 100%)' }}
+    <group position={[-1.2, 0.05, 0.3]} rotation={[0, Math.PI / 6, 0]}>
+      <RoundedBox args={[0.6, 0.25, 0.6]} radius={0.05} smoothness={4}>
+        <meshStandardMaterial color="#d1d5db" metalness={0.8} roughness={0.2} />
+      </RoundedBox>
+      {/* Front LED */}
+      <mesh position={[0, 0, 0.301]}>
+        <planeGeometry args={[0.01, 0.01]} />
+        <meshBasicMaterial color="#60a5fa" />
+      </mesh>
+    </group>
+  );
+};
+
+const Monitor = () => {
+  return (
+    <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
+      <group position={[0, 0.8, 0]}>
+        {/* Main Display Body */}
+        <RoundedBox args={[2.4, 1.4, 0.1]} radius={0.05} smoothness={4}>
+          <meshStandardMaterial color="#1f2937" metalness={0.9} roughness={0.1} />
+        </RoundedBox>
+        
+        {/* Silver Back/Bezel border */}
+        <RoundedBox args={[2.42, 1.42, 0.05]} radius={0.06} smoothness={4} position={[0, 0, -0.03]}>
+          <meshStandardMaterial color="#d1d5db" metalness={0.8} roughness={0.2} />
+        </RoundedBox>
+
+        {/* Height Adjustable Arm */}
+        <group position={[0, -0.7, -0.2]}>
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <cylinderGeometry args={[0.04, 0.04, 0.8]} />
+            <meshStandardMaterial color="#9ca3af" metalness={0.8} roughness={0.2} />
+          </mesh>
+          {/* Base Joint */}
+          <mesh position={[0, -0.4, 0]}>
+            <cylinderGeometry args={[0.15, 0.15, 0.02]} />
+            <meshStandardMaterial color="#d1d5db" metalness={0.8} roughness={0.2} />
+          </mesh>
+        </group>
+
+        {/* The Screen / Terminal Content */}
+        <Html
+          transform
+          distanceFactor={1.2}
+          position={[0, 0, 0.051]}
+          className="pointer-events-none select-none"
+        >
+          <div className="w-[800px] h-[450px] flex items-center justify-center overflow-hidden rounded-lg">
+            {/* Terminal Window */}
+            <div className="w-[500px] h-[300px] bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl p-6 relative flex flex-col font-mono">
+              {/* Terminal Header */}
+              <div className="flex gap-1.5 mb-4">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
+                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
+                <div className="ml-auto flex items-center gap-2">
+                   <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+                   <span className="text-[10px] text-blue-400/50 uppercase tracking-widest">System Active</span>
+                </div>
+              </div>
+              
+              <div className="text-blue-400 text-sm mb-4">
+                <span className="opacity-50">$</span> system.init(portfolio)
+              </div>
+
+              {/* Matrix-style Code Flow */}
+              <div className="flex-1 overflow-hidden mask-fade-bottom">
+                <div className="space-y-1 text-[10px] animate-matrix-flow">
+                  {Array.from({ length: 20 }).map((_, i) => (
+                    <div key={i} className="flex gap-4">
+                      <span className="text-purple-300">func</span>
+                      <span className="text-emerald-300">renderExperience()</span>
+                      <span className="text-orange-200">{`{ status: "deploying" }`}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Cursor */}
+              <div className="mt-2 w-2 h-4 bg-blue-400/50 animate-bounce" />
+            </div>
+          </div>
+        </Html>
+      </group>
+    </Float>
+  );
+};
+
+const Scene = () => {
+  return (
+    <>
+      <PerspectiveCamera makeDefault position={[0, 1, 5]} fov={35} />
+      
+      {/* Lighting */}
+      <ambientLight intensity={0.5} />
+      <spotLight 
+        position={[5, 10, 5]} 
+        angle={0.15} 
+        penumbra={1} 
+        intensity={2} 
+        castShadow 
+        shadow-mapSize={[2048, 2048]}
+      />
+      <directionalLight position={[-5, 5, -5]} intensity={0.5} color="#cbd5e1" />
+      
+      {/* Background Props (Blurred/Lifestyle) */}
+      <group position={[2, 0.2, -2]} rotation={[0, -Math.PI / 4, 0]}>
+        {/* Coffee Mug Representation */}
+        <mesh position={[0, 0.15, 0]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.2, 32]} />
+          <meshStandardMaterial color="#f8fafc" roughness={0.1} />
+        </mesh>
+      </group>
+
+      <group position={[-2.5, 0.5, -3]}>
+        {/* Monstera Leaf Representation (Abstract) */}
+        <mesh rotation={[0.4, 0.5, 0]}>
+          <sphereGeometry args={[0.4, 32, 32, 0, Math.PI * 2, 0, 0.5]} />
+          <meshStandardMaterial color="#166534" roughness={0.8} />
+        </mesh>
+      </group>
+
+      {/* Main Subjects */}
+      <Monitor />
+      <MacStudio />
+
+      {/* Desk */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+        <planeGeometry args={[20, 20]} />
+        <meshStandardMaterial color="#f1f5f9" roughness={0.5} metalness={0.1} />
+      </mesh>
+
+      <ContactShadows 
+        position={[0, 0, 0]} 
+        opacity={0.4} 
+        scale={10} 
+        blur={2} 
+        far={1} 
+        resolution={256} 
+        color="#000000" 
       />
       
-      {fragments.map((frag, i) => (
-        <div
-          key={i}
-          className={`absolute hidden lg:flex items-center justify-center 
-                     bg-white/5 border border-white/10 backdrop-blur-md 
-                     text-[8px] font-mono text-blue-400/50 uppercase tracking-widest
-                     transition-transform duration-1000 ease-out ${frag.size} ${frag.rounded || 'rounded-2xl'}`}
-          style={{
-            top: `${frag.y}%`,
-            left: `${frag.x}%`,
-            transform: `translate3d(${mousePos.x * (0.02 * (i + 1))}px, ${mousePos.y * (0.01 * (i + 1))}px, 0)`,
-            boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
-          }}
-        >
-          {frag.label}
-        </div>
-      ))}
+      <Environment preset="city" />
+    </>
+  );
+};
+
+// --- Main Component ---
+
+const HeroVisual: React.FC = () => {
+  return (
+    <div className="absolute inset-0 z-0">
+      <Canvas shadows dpr={[1, 2]}>
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
+      </Canvas>
+      
+      {/* Custom styles for the Terminal animation */}
+      <style>{`
+        @keyframes matrix-flow {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+        .animate-matrix-flow {
+          animation: matrix-flow 20s linear infinite;
+        }
+        .mask-fade-bottom {
+          mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+        }
+        .text-gradient {
+          background: linear-gradient(to right, #60a5fa, #a855f7);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+      `}</style>
     </div>
   );
 };
