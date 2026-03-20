@@ -9,6 +9,7 @@ import { PROJECTS_DATA, EXPERIENCE_DATA, ACHIEVEMENTS_DATA } from './constants';
 import HeroVisual from './components/HeroVisual';
 import ScrollReveal from './components/ScrollReveal';
 import LoadingScreen from './components/LoadingScreen';
+import TechIcon from './components/TechIcon';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
@@ -65,7 +66,7 @@ const App: React.FC = () => {
             className="w-full h-full flex flex-col lg:flex-row"
           >
             {/* Desktop Navigation */}
-            <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] bg-zinc-900/40 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-full hidden lg:flex items-center gap-8">
+            <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] bg-zinc-900/40 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-full hidden lg:flex items-center gap-8 shadow-md">
         {navItems.map((item) => (
           <button
             key={item.id}
@@ -165,14 +166,18 @@ const App: React.FC = () => {
           <div className="grid gap-8 sm:gap-16">
             {PROJECTS_DATA.map((project, index) => (
               <ScrollReveal key={project.id} delay={index * 0.1}>
-                <div className="group relative bg-zinc-900/40 rounded-[2rem] sm:rounded-[3rem] border border-white/5 p-6 sm:p-10 lg:p-14 transition-all hover:bg-zinc-900/60 overflow-hidden">
+                <div className="group relative bg-zinc-900/40 rounded-[2rem] sm:rounded-[3rem] border border-white/5 p-6 sm:p-10 lg:p-14 transition-all hover:bg-zinc-900/60 overflow-hidden shadow-lg">
                   <div className="flex flex-col lg:flex-row gap-8 sm:gap-12 items-center">
                     <div className="flex-1 w-full">
                       <div className="flex flex-wrap gap-2 mb-6 sm:mb-8">
                         {project.tech.map(t => (
-                          <span key={t} className="text-[8px] sm:text-[9px] font-black bg-zinc-800 text-zinc-500 px-3 sm:px-4 py-1.5 rounded-full border border-white/5 uppercase tracking-wider">{t}</span>
+                          <span key={t} className="flex items-center gap-1.5 text-[8px] sm:text-[9px] font-black bg-zinc-800 text-zinc-500 px-3 sm:px-4 py-1.5 rounded-full border border-white/5 uppercase tracking-wider">
+                            <TechIcon name={t} className="w-3 h-3" />
+                            {t}
+                          </span>
                         ))}
                       </div>
+
                       <h3 className="text-2xl sm:text-4xl font-black text-white mb-4 sm:mb-6 uppercase tracking-tight font-display">{project.title}</h3>
                       <p className="text-zinc-400 leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg">{project.description}</p>
                       <button className="flex items-center gap-3 text-white font-extrabold text-xs group-hover:text-blue-400 transition-colors uppercase tracking-[0.2em]">
@@ -233,7 +238,7 @@ const App: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {ACHIEVEMENTS_DATA.map((ach, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="bg-zinc-900/50 p-8 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] border border-white/5 flex flex-col items-center text-center group hover:bg-zinc-900 transition-all h-full">
+                <div className="bg-zinc-900/50 p-8 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] border border-white/5 flex flex-col items-center text-center group hover:bg-zinc-900 transition-all h-full shadow-md">
                   <div className="mb-6 sm:mb-8 bg-white/5 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
                     {ach.icon}
                   </div>
@@ -245,7 +250,7 @@ const App: React.FC = () => {
           </div>
 
           <ScrollReveal>
-            <div className="mt-20 sm:mt-32 p-8 sm:p-14 bg-gradient-to-br from-zinc-900 to-black rounded-[2.5rem] sm:rounded-[4rem] border border-white/10 flex flex-col lg:flex-row items-center gap-10 lg:gap-12 relative overflow-hidden group">
+            <div className="mt-20 sm:mt-32 p-8 sm:p-14 bg-gradient-to-br from-zinc-900 to-black rounded-[2.5rem] sm:rounded-[4rem] border border-white/10 flex flex-col lg:flex-row items-center gap-10 lg:gap-12 relative overflow-hidden group shadow-lg">
               <div className="absolute -right-20 -top-20 w-64 h-64 bg-blue-500/10 blur-[100px] group-hover:bg-blue-500/20 transition-all"></div>
               <div className="flex-1 relative z-10 text-center lg:text-left w-full">
                 <h3 className="text-2xl sm:text-4xl font-black text-white mb-4 sm:mb-6 tracking-tight font-display uppercase">READY TO START A PROJECT?</h3>

@@ -1,0 +1,48 @@
+/* Premium Elevation System */
+
+.shadow-sm {
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 2px 4px rgba(0, 0, 0, 0.03),
+    0 4px 8px rgba(0, 0, 0, 0.02),
+    0 8px 16px rgba(0, 0, 0, 0.01),
+    0 16px 32px -8px rgba(0, 0, 0, 0.01);
+}
+
+.shadow-md {
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 4px 8px rgba(0, 0, 0, 0.04),
+    0 8px 16px rgba(0, 0, 0, 0.03),
+    0 16px 32px rgba(0, 0, 0, 0.02),
+    0 32px 64px -12px rgba(0, 0, 0, 0.02);
+}
+
+.shadow-lg {
+  box-shadow: 
+    0 2px 5px rgba(0, 0, 0, 0.07),
+    0 10px 20px rgba(0, 0, 0, 0.05),
+    0 20px 40px rgba(0, 0, 0, 0.04),
+    0 40px 80px rgba(0, 0, 0, 0.03),
+    0 80px 160px -20px rgba(0, 0, 0, 0.02);
+}
+
+/* Custom styles for the Terminal animation in HeroVisual */
+@keyframes matrix-flow {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.animate-matrix-flow {
+  animation: matrix-flow 20s linear infinite;
+}
+
+.mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #60a5fa, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

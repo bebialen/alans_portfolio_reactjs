@@ -1,16 +1,13 @@
-import React, { Suspense, useMemo, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import React, { Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
 import { 
   PerspectiveCamera, 
   Environment, 
   Float, 
   ContactShadows, 
   Html, 
-  MeshStandardMaterial,
-  RoundedBox,
-  Text
+  RoundedBox
 } from '@react-three/drei';
-import * as THREE from 'three';
 
 // --- Components ---
 
@@ -173,25 +170,6 @@ const HeroVisual: React.FC = () => {
           <Scene />
         </Suspense>
       </Canvas>
-      
-      {/* Custom styles for the Terminal animation */}
-      <style>{`
-        @keyframes matrix-flow {
-          0% { transform: translateY(0); }
-          100% { transform: translateY(-50%); }
-        }
-        .animate-matrix-flow {
-          animation: matrix-flow 20s linear infinite;
-        }
-        .mask-fade-bottom {
-          mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-        }
-        .text-gradient {
-          background: linear-gradient(to right, #60a5fa, #a855f7);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-      `}</style>
     </div>
   );
 };
