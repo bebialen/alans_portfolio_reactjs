@@ -4,8 +4,8 @@ import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, PerspectiveCamera, ContactShadows } from '@react-three/drei';
 import PhoneModel from './components/PhoneModel';
-import { Github, Linkedin, Twitter, Download, ChevronRight, LayoutGrid, History, Trophy, Mail, Menu, X } from 'lucide-react';
-import { PROJECTS_DATA, EXPERIENCE_DATA, ACHIEVEMENTS_DATA } from './constants';
+import { Github, Linkedin, Twitter, Download, ChevronRight, LayoutGrid, History, Trophy, Mail, Menu, X, BookOpen, Clock } from 'lucide-react';
+import { PROJECTS_DATA, EXPERIENCE_DATA, ACHIEVEMENTS_DATA, BLOGS_DATA } from './constants';
 import HeroVisual from './components/HeroVisual';
 import TerminalHero from './components/TerminalHero';
 import ScrollReveal from './components/ScrollReveal';
@@ -24,6 +24,7 @@ const App: React.FC = () => {
     { id: 'home', label: 'Home', icon: <LayoutGrid className="w-4 h-4" /> },
     { id: 'projects', label: 'Works', icon: <ChevronRight className="w-4 h-4" /> },
     { id: 'experience', label: 'Resume', icon: <History className="w-4 h-4" /> },
+    { id: 'blogs', label: 'Blogs', icon: <BookOpen className="w-4 h-4" /> },
     { id: 'achievements', label: 'Impact', icon: <Trophy className="w-4 h-4" /> }
   ];
 
@@ -32,8 +33,9 @@ const App: React.FC = () => {
     if (!container) return;
 
     const handleScroll = () => {
-      const sections = ['home', 'projects', 'experience', 'achievements'];
+      const sections = ['home', 'projects', 'experience', 'blogs', 'achievements'];
       const viewportCenter = window.innerHeight / 2;
+
 
       for (const section of sections) {
         const el = document.getElementById(section);
@@ -237,8 +239,60 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Section 4: Achievements */}
+        {/* Section 4: Blogs */}
+        <section id="blogs" className="min-h-screen p-6 sm:p-12 lg:p-24 bg-[#050505]">
+          <ScrollReveal>
+            <p className="text-emerald-500 font-black text-[10px] tracking-[0.4em] uppercase mb-4">Deep Dives</p>
+            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black text-white leading-none tracking-tighter font-display uppercase mb-12 sm:mb-20">LATEST ARTICLES</h2>
+          </ScrollReveal>
+
+          <div className="grid gap-12 sm:gap-16 max-w-5xl mx-auto">
+            {BLOGS_DATA.map((blog, i) => (
+              <ScrollReveal key={blog.id} delay={i * 0.1}>
+                <a 
+                  href={blog.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group block relative bg-zinc-900/40 rounded-[2rem] sm:rounded-[3rem] border border-white/5 overflow-hidden transition-all hover:bg-zinc-900/60 hover:border-emerald-500/20 shadow-lg"
+                >
+                  <div className="flex flex-col lg:flex-row">
+                    <div className="lg:w-2/5 aspect-[16/10] lg:aspect-auto overflow-hidden relative">
+                      <img 
+                        src={blog.image} 
+                        alt={blog.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                      />
+                      <div className="absolute top-6 left-6 flex gap-3">
+                        <span className="bg-black/60 backdrop-blur-md text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-white/10 text-emerald-400">
+                          {blog.category}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="lg:w-3/5 p-8 sm:p-10 lg:p-12 flex flex-col justify-center">
+                      <div className="flex items-center gap-4 text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-4">
+                        <Clock className="w-3 h-3" />
+                        {blog.readTime}
+                      </div>
+                      <h3 className="text-2xl sm:text-4xl font-black text-white mb-4 uppercase tracking-tight font-display group-hover:text-emerald-400 transition-colors leading-tight">
+                        {blog.title}
+                      </h3>
+                      <p className="text-zinc-400 text-sm sm:text-base leading-relaxed mb-8 max-w-xl">
+                        {blog.description}
+                      </p>
+                      <div className="flex items-center gap-3 text-white font-extrabold text-[10px] uppercase tracking-[0.3em] mt-auto">
+                        Read on Medium <ChevronRight className="w-4 h-4 text-emerald-500" />
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </ScrollReveal>
+            ))}
+          </div>
+        </section>
+
+        {/* Section 5: Achievements */}
         <section id="achievements" className="min-h-screen p-6 sm:p-12 lg:p-24 flex flex-col justify-center bg-zinc-950/30">
+
           <ScrollReveal>
             <p className="text-green-500 font-black text-[10px] tracking-[0.4em] uppercase mb-4">Metric Driven</p>
             <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black text-white leading-none tracking-tighter font-display uppercase mb-12 sm:mb-24">PROVEN IMPACT</h2>

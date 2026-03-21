@@ -19,6 +19,16 @@ export interface Project {
   link?: string;
 }
 
+export interface Blog {
+  id: string;
+  title: string;
+  description: string;
+  link: string;
+  image: string;
+  category: string;
+  readTime: string;
+}
+
 export interface Skill {
   name: string;
   level: number;

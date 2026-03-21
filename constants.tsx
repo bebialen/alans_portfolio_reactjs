@@ -1,7 +1,28 @@
 
 import React from 'react';
 import { User, Briefcase, Zap, Mail, MessageSquare, Gamepad2, Award, Users, Star, Code2, Globe } from 'lucide-react';
-import { AppType, Project, Skill } from './types';
+import { AppType, Project, Skill, Blog } from './types';
+
+export const BLOGS_DATA: Blog[] = [
+  {
+    id: 'blog-1',
+    title: 'My Workout Plan as a Busy Developer',
+    description: 'A deep dive into how I balance intense coding sessions with a consistent fitness routine without burning out.',
+    link: 'https://medium.com/@bebialen/my-workout-plan-as-a-busy-developer-c464761606b3',
+    image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=800&h=450',
+    category: 'Lifestyle',
+    readTime: '5 min read'
+  },
+  {
+    id: 'blog-2',
+    title: '9 Weird Tricks to Fix Sleep Deprivation',
+    description: 'How I went from a sleep-deprived dev to a high-performance engineer using science-backed (and some unusual) methods.',
+    link: 'https://medium.com/@bebialen/i-was-a-sleep-deprived-developer-until-these-9-weird-tricks-fixed-everything-number-4-made-me-c74b6f7bfeb6',
+    image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&q=80&w=800&h=450',
+    category: 'Health',
+    readTime: '7 min read'
+  }
+];
 
 export const APPS = [
   { id: AppType.ABOUT, name: 'About', icon: <User className="w-8 h-8 text-white" />, color: 'bg-blue-500' },
