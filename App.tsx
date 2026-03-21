@@ -56,7 +56,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-[#050505] flex flex-col lg:flex-row relative overflow-hidden text-white">
+    <div className="w-full h-screen bg-[#050505] flex flex-col lg:flex-row relative overflow-hidden text-white overscroll-none">
       <LoadingScreen onComplete={() => setIsLoading(false)} />
         {/* <CareerIDE/> */}
       <AnimatePresence>
@@ -65,8 +65,9 @@ const App: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, ease: "easeInOut" }}
-            className="w-full h-full flex flex-col lg:flex-row"
+            className="w-full h-full flex flex-col lg:flex-row overflow-hidden"
           >
+
             {/* Desktop Navigation */}
             <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] bg-zinc-900/40 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-full hidden lg:flex items-center gap-8 shadow-md">
         {navItems.map((item) => (
@@ -115,10 +116,11 @@ const App: React.FC = () => {
       {/* Content Area */}
       <div
         ref={scrollRef}
-        className="flex-1 h-full overflow-y-auto no-scrollbar relative z-10"
+        className="flex-1 h-full overflow-y-auto overflow-x-hidden no-scrollbar relative z-10 overscroll-none"
       >
         {/* Section 1: Home/Hero */}
-        <section id="home" className="min-h-screen flex flex-col lg:flex-row items-center justify-center p-6 sm:p-12 lg:p-24 relative gap-16 lg:gap-24">
+        <section id="home" className="min-h-screen flex flex-col lg:flex-row items-center justify-center p-6 sm:p-12 lg:p-24 relative gap-16 lg:gap-24 overflow-hidden">
+
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
