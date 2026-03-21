@@ -59,7 +59,7 @@ export const EXPERIENCE_DATA = [
 ];
 
 export const ACHIEVEMENTS_DATA = [
-  { label: 'Experience', value: '1.7 Years', icon: <Star className="w-6 h-6 text-yellow-500" /> },
+  { label: 'Experience', value: '2+ Years', icon: <Star className="w-6 h-6 text-yellow-500" /> },
   { label: 'Projects Built', value: '6+', icon: <Users className="w-6 h-6 text-blue-500" /> },
   { label: 'Hackathon Finalist', value: 'Top 10/650', icon: <Award className="w-6 h-6 text-purple-500" /> },
   { label: 'Tech Stack', value: 'Flutter • React • Kotlin', icon: <Code2 className="w-6 h-6 text-green-500" /> }
