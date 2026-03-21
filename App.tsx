@@ -7,10 +7,12 @@ import PhoneModel from './components/PhoneModel';
 import { Github, Linkedin, Twitter, Download, ChevronRight, LayoutGrid, History, Trophy, Mail, Menu, X } from 'lucide-react';
 import { PROJECTS_DATA, EXPERIENCE_DATA, ACHIEVEMENTS_DATA } from './constants';
 import HeroVisual from './components/HeroVisual';
+import TerminalHero from './components/TerminalHero';
 import ScrollReveal from './components/ScrollReveal';
 import LoadingScreen from './components/LoadingScreen';
 import TechIcon from './components/TechIcon';
 import { motion, AnimatePresence } from 'framer-motion';
+import CareerIDE from './components/CareerIDE';
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -56,7 +58,7 @@ const App: React.FC = () => {
   return (
     <div className="w-full h-screen bg-[#050505] flex flex-col lg:flex-row relative overflow-hidden text-white">
       <LoadingScreen onComplete={() => setIsLoading(false)} />
-
+        {/* <CareerIDE/> */}
       <AnimatePresence>
         {!isLoading && (
           <motion.div
@@ -116,17 +118,18 @@ const App: React.FC = () => {
         className="flex-1 h-full overflow-y-auto no-scrollbar relative z-10"
       >
         {/* Section 1: Home/Hero */}
-        <section id="home" className="min-h-screen flex flex-col justify-center p-6 sm:p-12 lg:p-24 relative">
+        <section id="home" className="min-h-screen flex flex-col lg:flex-row items-center justify-center p-6 sm:p-12 lg:p-24 relative gap-16 lg:gap-24">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex-1 relative z-10"
           >
             <div className="mb-6 inline-flex items-center gap-3 bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full text-[9px] font-black tracking-widest uppercase border border-blue-500/20 w-fit">
               <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
               Mobile App Developer
             </div>
-            <h1 className="text-5xl sm:text-7xl lg:text-[10rem] font-black text-white mb-6 leading-[0.85] tracking-tighter font-display uppercase">
+            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-black text-white mb-6 leading-[0.85] tracking-tighter font-display uppercase">
               ALAN <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">DEV.</span>
             </h1>
             <p className="text-zinc-400 text-lg sm:text-xl mb-10 max-w-lg leading-relaxed font-medium">
@@ -148,6 +151,10 @@ const App: React.FC = () => {
               </button>
             </div>
           </motion.div>
+
+          <div className="flex-1 w-full max-w-2xl z-10">
+            <TerminalHero />
+          </div>
           
           <div className="absolute bottom-10 left-12 sm:left-24 animate-bounce hidden sm:block">
             <div className="w-px h-12 bg-gradient-to-b from-blue-500 to-transparent"></div>
