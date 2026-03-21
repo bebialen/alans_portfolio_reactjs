@@ -207,7 +207,7 @@ const App: React.FC = () => {
         <section id="experience" className="min-h-screen p-6 sm:p-12 lg:p-24">
           <ScrollReveal>
             <p className="text-purple-500 font-black text-[10px] tracking-[0.4em] uppercase mb-4">Career Journey</p>
-            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black text-white leading-none tracking-tighter font-display uppercase mb-12 sm:mb-20">PROFESSIONAL ARC</h2>
+            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black text-white leading-none tracking-tighter font-display uppercase mb-12 sm:mb-20">Experience</h2>
           </ScrollReveal>
 
           <div className="relative">
