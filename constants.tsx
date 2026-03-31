@@ -59,7 +59,7 @@ export const PROJECTS_DATA: Project[] = [
     id: '4',
     title: 'Aura',
     description: "Aura is the ultimate performance tracking ecosystem designed for those who demand precision, clarity, and aesthetic excellence in their self-improvement journey. By seamlessly integrating fitness, nutrition, and habit tracking into a single, high-fidelity experience, Aura transforms raw data into a clear path toward your peak potential.",
-    tech: ['React', 'Gemini API', 'Vercel', 'AI Integration'],
+    tech: ['React', 'Gemini API', 'Vercel', 'AI Integration','firebase'],
     image: 'https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&q=80&w=800&h=400'
   },
   {
