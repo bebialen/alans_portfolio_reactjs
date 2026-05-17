@@ -17,7 +17,7 @@ export interface Project {
   tech: string[];
   image: string;
   link?: string;
-  caseStudy?: string;
+  caseStudyPath?: string;
 }
 
 export interface Blog {

@@ -40,25 +40,7 @@ export const PROJECTS_DATA: Project[] = [
     description: 'A high-performance, enterprise-grade logistics solution designed to optimize high-volume valet parking operations using a Hub-and-Spoke model.',
     tech: ['Kotlin', 'Angular', 'Node.js', 'MySQL', 'Firebase', 'MVVM'],
     image: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&q=80&w=800&h=400',
-    caseStudy: `### Executive Summary
-The **KIMS Centralized Valet System** is a high-performance, enterprise-grade logistics solution designed to streamline, track, and optimize high-volume valet parking operations across an expansive campus.
-
-### The Challenge
-Large-scale campuses face volatile traffic influxes, leading to bottlenecks at drop-off zones and delayed vehicle retrieval. Key challenges included communication gaps and state tracking visibility.
-
-### System Architecture: The Hub-and-Spoke Model
-To solve these operational bottlenecks, the system was designed around a centralized, synchronized architecture:
-- **Desktop Hub (Central Control):** A web-based portal (Angular) for high-level oversight and gate management.
-- **Tablet Spokes (Field Operations):** A Kotlin-based tablet application for rapid vehicle intake and real-time status updates.
-
-### Core Features
-- **Valet Lifecycle Management:** Deterministic states (Intake, Assigned, Parked, Retrieval Requested, Handed Over).
-- **Real-time Notifications:** Automated SMS workflow using Firebase to reduce vehicle dwell time.
-- **Optimized Field UI:** High-contrast, touch-optimized design for fast-paced outdoor environments.
-
-### Results
-- **Turnaround Efficiency:** Significantly reduced average vehicle retrieval times.
-- **Data Accountability:** Eliminated misplaced keys and unlogged vehicles.`
+    caseStudyPath: '/casestudies/valet_parking_system.md'
   },
   {
     id: '2',
@@ -74,9 +56,6 @@ To solve these operational bottlenecks, the system was designed around a central
     tech: ['Kotlin', 'Jetpack Compose', 'MVVM', 'Node.js', 'MySQL', 'Figma'],
     image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800&h=400'
   },
-  
-  
- 
   {
     id: '4',
     title: 'IP Device Monitoring App',
@@ -84,7 +63,7 @@ To solve these operational bottlenecks, the system was designed around a central
     tech: ['Flutter', 'Provider', 'Node.js', 'MySQL', 'Figma'],
     image: 'https://images.unsplash.com/photo-1551288049-bbda38a5f971?auto=format&fit=crop&q=80&w=800&h=400'
   },
-   {
+  {
     id: '5',
     title: 'Aura',
     description: "Aura is the ultimate performance tracking ecosystem designed for those who demand precision, clarity, and aesthetic excellence in their self-improvement journey. By seamlessly integrating fitness, nutrition, and habit tracking into a single, high-fidelity experience, Aura transforms raw data into a clear path toward your peak potential.",
@@ -133,4 +112,3 @@ export const SKILLS_DATA: Skill[] = [
   { name: 'Provider / BLoC', level: 88 },
   { name: 'Clean Architecture', level: 85 }
 ];
-

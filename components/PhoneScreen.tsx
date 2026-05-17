@@ -189,11 +189,34 @@ const IRunner: React.FC<{ onGameOver: (score: number) => void }> = ({ onGameOver
 const PhoneScreen: React.FC<PhoneScreenProps> = ({ activeSection = 'locked' }) => {
   const [activeApp, setActiveApp] = useState<AppType>(AppType.LOCKED);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [caseStudyContent, setCaseStudyContent] = useState<string | null>(null);
   const [time, setTime] = useState(new Date());
   const [aiInput, setAiInput] = useState('');
   const [aiChat, setAiChat] = useState<{role: 'user' | 'bot', text: string}[]>([]);
   const [isAiTyping, setIsAiTyping] = useState(false);
   const [isUnlocking, setIsUnlocking] = useState(false);
+
+  useEffect(() => {
+    const fetchCaseStudy = async () => {
+      if (selectedProject?.caseStudyPath) {
+        try {
+          const response = await fetch(selectedProject.caseStudyPath);
+          if (response.ok) {
+            const text = await response.text();
+            setCaseStudyContent(text);
+          } else {
+            setCaseStudyContent('Error loading case study.');
+          }
+        } catch (error) {
+          console.error('Error fetching case study:', error);
+          setCaseStudyContent('Error loading case study.');
+        }
+      } else {
+        setCaseStudyContent(null);
+      }
+    };
+    fetchCaseStudy();
+  }, [selectedProject]);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -360,7 +383,7 @@ const PhoneScreen: React.FC<PhoneScreenProps> = ({ activeSection = 'locked' }) =
         </div>
 
         <div className="space-y-8 pb-20">
-          {selectedProject.caseStudy?.split('###').filter(Boolean).map((section, i) => {
+          {(caseStudyContent || selectedProject.caseStudyPath)?.split('###').filter(Boolean).map((section, i) => {
             const lines = section.trim().split('\n');
             const title = lines[0];
             const content = lines.slice(1);
@@ -400,8 +423,8 @@ const PhoneScreen: React.FC<PhoneScreenProps> = ({ activeSection = 'locked' }) =
           {PROJECTS_DATA.map(project => (
             <div 
               key={project.id} 
-              onClick={() => project.caseStudy ? setSelectedProject(project) : null}
-              className={`group relative bg-zinc-900 rounded-[2.5rem] overflow-hidden border border-white/5 transition-all active:scale-[0.98] ${project.caseStudy ? 'cursor-pointer' : ''}`}
+              onClick={() => project.caseStudyPath ? setSelectedProject(project) : null}
+              className={`group relative bg-zinc-900 rounded-[2.5rem] overflow-hidden border border-white/5 transition-all active:scale-[0.98] ${project.caseStudyPath ? 'cursor-pointer' : ''}`}
             >
               <div className="relative h-56">
                 <img src={project.image} className="w-full h-full object-cover" />
@@ -409,7 +432,7 @@ const PhoneScreen: React.FC<PhoneScreenProps> = ({ activeSection = 'locked' }) =
                 <div className="absolute bottom-6 left-8">
                    <h3 className="text-2xl font-black text-white tracking-tighter uppercase font-display leading-none">{project.title}</h3>
                 </div>
-                {project.caseStudy && (
+                {project.caseStudyPath && (
                   <div className="absolute top-6 right-6 bg-blue-500/20 backdrop-blur-md border border-blue-500/30 px-3 py-1 rounded-full">
                     <span className="text-[7px] font-black text-blue-400 uppercase tracking-widest">Case Study</span>
                   </div>
