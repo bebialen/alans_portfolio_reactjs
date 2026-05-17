@@ -13,6 +13,10 @@ import LoadingScreen from './components/LoadingScreen';
 import TechIcon from './components/TechIcon';
 import { motion, AnimatePresence } from 'framer-motion';
 import CareerIDE from './components/CareerIDE';
+import { BackgroundPaths } from "@/components/ui/background-paths";
+   2
+   3 // Usage
+   4 
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -86,6 +90,7 @@ const App: React.FC = () => {
 
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-[100] p-6 flex justify-between items-center bg-gradient-to-b from-[#050505] to-transparent">
+        
         <div className="text-xl font-black tracking-tighter uppercase font-display">ALAN <span className="text-blue-500">DEV.</span></div>
         <button 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -94,6 +99,8 @@ const App: React.FC = () => {
           {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
+
+      
 
       {/* Mobile Menu Overlay */}
       <div className={`lg:hidden fixed inset-0 z-[90] bg-black/95 backdrop-blur-2xl transition-all duration-500 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
@@ -129,10 +136,13 @@ const App: React.FC = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex-1 relative z-10"
           >
+            
             <div className="mb-6 inline-flex items-center gap-3 bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full text-[9px] font-black tracking-widest uppercase border border-blue-500/20 w-fit">
               <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
               Mobile App Developer
             </div>
+                          {/* <BackgroundPaths title="Alan Bebido" /> */}
+
             <h1 className="text-5xl sm:text-7xl lg:text-9xl font-black text-white mb-6 leading-[0.85] tracking-tighter font-display uppercase">
               ALAN <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">DEV.</span>
             </h1>
