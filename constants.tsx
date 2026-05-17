@@ -36,17 +36,36 @@ export const APPS = [
 export const PROJECTS_DATA: Project[] = [
   {
     id: '1',
+    title: 'Valet Parking System',
+    description: 'A high-performance, enterprise-grade logistics solution designed to optimize high-volume valet parking operations using a Hub-and-Spoke model.',
+    tech: ['Kotlin', 'Angular', 'Node.js', 'MySQL', 'Firebase', 'MVVM'],
+    image: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&q=80&w=800&h=400',
+    caseStudy: `### Executive Summary
+The **KIMS Centralized Valet System** is a high-performance, enterprise-grade logistics solution designed to streamline, track, and optimize high-volume valet parking operations across an expansive campus.
+
+### The Challenge
+Large-scale campuses face volatile traffic influxes, leading to bottlenecks at drop-off zones and delayed vehicle retrieval. Key challenges included communication gaps and state tracking visibility.
+
+### System Architecture: The Hub-and-Spoke Model
+To solve these operational bottlenecks, the system was designed around a centralized, synchronized architecture:
+- **Desktop Hub (Central Control):** A web-based portal (Angular) for high-level oversight and gate management.
+- **Tablet Spokes (Field Operations):** A Kotlin-based tablet application for rapid vehicle intake and real-time status updates.
+
+### Core Features
+- **Valet Lifecycle Management:** Deterministic states (Intake, Assigned, Parked, Retrieval Requested, Handed Over).
+- **Real-time Notifications:** Automated SMS workflow using Firebase to reduce vehicle dwell time.
+- **Optimized Field UI:** High-contrast, touch-optimized design for fast-paced outdoor environments.
+
+### Results
+- **Turnaround Efficiency:** Significantly reduced average vehicle retrieval times.
+- **Data Accountability:** Eliminated misplaced keys and unlogged vehicles.`
+  },
+  {
+    id: '2',
     title: 'Parkochi',
     description: 'A smart parking discovery and booking application built with Flutter using BLoC architecture. Enables users to find, reserve, and manage parking slots efficiently.',
     tech: ['Flutter', 'BLoC', 'Clean Architecture', 'REST API'],
     image: 'https://images.unsplash.com/photo-1551288049-bbda38a5f971?auto=format&fit=crop&q=80&w=800&h=400'
-  },
-  {
-    id: '2',
-    title: 'Eduplay',
-    description: 'A voice-based AI Quiz application designed for differently-abled users. Built using React and Gemini API. Selected in Top 10 out of 650 participants in a Carestack Hackathon.',
-    tech: ['React', 'Gemini API', 'Vercel', 'AI Integration'],
-    image: 'https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&q=80&w=800&h=400'
   },
   {
     id: '3',
@@ -55,19 +74,29 @@ export const PROJECTS_DATA: Project[] = [
     tech: ['Kotlin', 'Jetpack Compose', 'MVVM', 'Node.js', 'MySQL', 'Figma'],
     image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800&h=400'
   },
+  
+  
+ 
   {
     id: '4',
-    title: 'Aura',
-    description: "Aura is the ultimate performance tracking ecosystem designed for those who demand precision, clarity, and aesthetic excellence in their self-improvement journey. By seamlessly integrating fitness, nutrition, and habit tracking into a single, high-fidelity experience, Aura transforms raw data into a clear path toward your peak potential.",
-    tech: ['React', 'Gemini API', 'Vercel', 'AI Integration','firebase'],
-    image: 'https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&q=80&w=800&h=400'
-  },
-  {
-    id: '5',
     title: 'IP Device Monitoring App',
     description: 'A mobile application to monitor and manage network IP devices remotely. Built with Flutter using Provider state management and Node.js backend.',
     tech: ['Flutter', 'Provider', 'Node.js', 'MySQL', 'Figma'],
     image: 'https://images.unsplash.com/photo-1551288049-bbda38a5f971?auto=format&fit=crop&q=80&w=800&h=400'
+  },
+   {
+    id: '5',
+    title: 'Aura',
+    description: "Aura is the ultimate performance tracking ecosystem designed for those who demand precision, clarity, and aesthetic excellence in their self-improvement journey. By seamlessly integrating fitness, nutrition, and habit tracking into a single, high-fidelity experience, Aura transforms raw data into a clear path toward your peak potential.",
+    tech: ['React', 'Gemini API', 'Vercel', 'AI Integration', 'firebase'],
+    image: 'https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&q=80&w=800&h=400'
+  },
+  {
+    id: '6',
+    title: 'Eduplay',
+    description: 'A voice-based AI Quiz application designed for differently-abled users. Built using React and Gemini API. Selected in Top 10 out of 650 participants in a Carestack Hackathon.',
+    tech: ['React', 'Gemini API', 'Vercel', 'AI Integration'],
+    image: 'https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&q=80&w=800&h=400'
   }
 ];
 
@@ -98,6 +127,9 @@ export const SKILLS_DATA: Skill[] = [
   { name: 'Kotlin / Jetpack Compose', level: 85 },
   { name: 'React', level: 80 },
   { name: 'Node.js', level: 75 },
+  { name: 'Angular', level: 78 },
+  { name: 'Firebase', level: 82 },
+  { name: 'MySQL', level: 80 },
   { name: 'Provider / BLoC', level: 88 },
   { name: 'Clean Architecture', level: 85 }
 ];

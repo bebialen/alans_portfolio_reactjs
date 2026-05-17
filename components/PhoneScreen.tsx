@@ -188,6 +188,7 @@ const IRunner: React.FC<{ onGameOver: (score: number) => void }> = ({ onGameOver
 
 const PhoneScreen: React.FC<PhoneScreenProps> = ({ activeSection = 'locked' }) => {
   const [activeApp, setActiveApp] = useState<AppType>(AppType.LOCKED);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [time, setTime] = useState(new Date());
   const [aiInput, setAiInput] = useState('');
   const [aiChat, setAiChat] = useState<{role: 'user' | 'bot', text: string}[]>([]);
@@ -198,6 +199,12 @@ const PhoneScreen: React.FC<PhoneScreenProps> = ({ activeSection = 'locked' }) =
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (activeApp !== AppType.PROJECTS) {
+      setSelectedProject(null);
+    }
+  }, [activeApp]);
 
   // Synchronize Phone app with desktop scroll position
   useEffect(() => {
@@ -331,34 +338,98 @@ const PhoneScreen: React.FC<PhoneScreenProps> = ({ activeSection = 'locked' }) =
     </div>
   );
 
-  const renderProjects = () => (
-    <div className="h-full bg-[#050505] text-white p-8 overflow-y-auto no-scrollbar pt-20 animate-in slide-in-from-bottom duration-500">
-      <button onClick={() => setActiveApp(AppType.HOME)} className="mb-8 flex items-center text-zinc-600 font-black text-[10px] tracking-widest uppercase">
-        <ArrowLeft className="w-4 h-4 mr-2" /> BACK
-      </button>
-      <h2 className="text-5xl font-black mb-10 tracking-tighter uppercase font-display leading-none">WORKS</h2>
-      <div className="space-y-10 pb-10">
-        {PROJECTS_DATA.map(project => (
-          <div key={project.id} className="group relative bg-zinc-900 rounded-[2.5rem] overflow-hidden border border-white/5 transition-all active:scale-[0.98]">
-            <div className="relative h-56">
-              <img src={project.image} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
-              <div className="absolute bottom-6 left-8">
-                 <h3 className="text-2xl font-black text-white tracking-tighter uppercase font-display leading-none">{project.title}</h3>
-              </div>
-            </div>
-            <div className="p-8">
-              <div className="flex flex-wrap gap-2">
-                {project.tech.slice(0, 3).map(t => (
-                  <span key={t} className="text-[8px] bg-white/5 border border-white/5 text-zinc-500 px-3 py-1 rounded-full font-black uppercase tracking-wider">{t}</span>
-                ))}
-              </div>
+  const renderProjectDetail = () => {
+    if (!selectedProject) return null;
+    return (
+      <div className="h-full bg-zinc-950 text-white p-8 overflow-y-auto no-scrollbar pt-20 animate-in slide-in-from-right duration-500">
+        <button onClick={() => setSelectedProject(null)} className="mb-8 flex items-center text-zinc-600 font-black text-[10px] tracking-widest uppercase">
+          <ArrowLeft className="w-4 h-4 mr-2" /> BACK TO WORKS
+        </button>
+        
+        <div className="relative h-64 -mx-8 -mt-20 mb-10">
+          <img src={selectedProject.image} className="w-full h-full object-cover opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent"></div>
+          <div className="absolute bottom-10 left-8 right-8">
+            <h2 className="text-4xl font-black tracking-tighter uppercase font-display leading-none mb-4">{selectedProject.title}</h2>
+            <div className="flex flex-wrap gap-2">
+              {selectedProject.tech.map(t => (
+                <span key={t} className="text-[8px] bg-white/10 backdrop-blur-md border border-white/10 text-white px-3 py-1 rounded-full font-black uppercase tracking-wider">{t}</span>
+              ))}
             </div>
           </div>
-        ))}
+        </div>
+
+        <div className="space-y-8 pb-20">
+          {selectedProject.caseStudy?.split('###').filter(Boolean).map((section, i) => {
+            const lines = section.trim().split('\n');
+            const title = lines[0];
+            const content = lines.slice(1);
+            return (
+              <div key={i} className="space-y-4">
+                <h3 className="text-xl font-black text-blue-400 uppercase tracking-tight">{title.trim()}</h3>
+                <div className="text-zinc-400 text-[11px] leading-relaxed space-y-4">
+                  {content.join('\n').split('\n').filter(Boolean).map((p, j) => {
+                    if (p.trim().startsWith('- ')) {
+                      return (
+                        <div key={j} className="flex gap-3 items-start">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-500/50 mt-1.5 shrink-0"></div>
+                          <p>{p.trim().replace('- ', '')}</p>
+                        </div>
+                      );
+                    }
+                    return <p key={j}>{p}</p>;
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  const renderProjects = () => {
+    if (selectedProject) return renderProjectDetail();
+    return (
+      <div className="h-full bg-[#050505] text-white p-8 overflow-y-auto no-scrollbar pt-20 animate-in slide-in-from-bottom duration-500">
+        <button onClick={() => setActiveApp(AppType.HOME)} className="mb-8 flex items-center text-zinc-600 font-black text-[10px] tracking-widest uppercase">
+          <ArrowLeft className="w-4 h-4 mr-2" /> BACK
+        </button>
+        <h2 className="text-5xl font-black mb-10 tracking-tighter uppercase font-display leading-none">WORKS</h2>
+        <div className="space-y-10 pb-10">
+          {PROJECTS_DATA.map(project => (
+            <div 
+              key={project.id} 
+              onClick={() => project.caseStudy ? setSelectedProject(project) : null}
+              className={`group relative bg-zinc-900 rounded-[2.5rem] overflow-hidden border border-white/5 transition-all active:scale-[0.98] ${project.caseStudy ? 'cursor-pointer' : ''}`}
+            >
+              <div className="relative h-56">
+                <img src={project.image} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+                <div className="absolute bottom-6 left-8">
+                   <h3 className="text-2xl font-black text-white tracking-tighter uppercase font-display leading-none">{project.title}</h3>
+                </div>
+                {project.caseStudy && (
+                  <div className="absolute top-6 right-6 bg-blue-500/20 backdrop-blur-md border border-blue-500/30 px-3 py-1 rounded-full">
+                    <span className="text-[7px] font-black text-blue-400 uppercase tracking-widest">Case Study</span>
+                  </div>
+                )}
+              </div>
+              <div className="p-8">
+                <p className="text-zinc-500 text-[10px] leading-relaxed mb-4 line-clamp-2">{project.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.slice(0, 3).map(t => (
+                    <span key={t} className="text-[8px] bg-white/5 border border-white/5 text-zinc-500 px-3 py-1 rounded-full font-black uppercase tracking-wider">{t}</span>
+                  ))}
+                  {project.tech.length > 3 && <span className="text-[8px] text-zinc-700 font-black py-1">+{project.tech.length - 3}</span>}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   const renderSkills = () => (
     <div className="h-full bg-[#0a0a0a] text-white p-8 pt-20 flex flex-col animate-in fade-in duration-500">
