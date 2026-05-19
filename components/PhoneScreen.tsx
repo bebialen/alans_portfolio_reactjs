@@ -426,18 +426,31 @@ const PhoneScreen: React.FC<PhoneScreenProps> = ({ activeSection = 'locked' }) =
               onClick={() => project.caseStudyPath ? setSelectedProject(project) : null}
               className={`group relative bg-zinc-900 rounded-[2.5rem] overflow-hidden border border-white/5 transition-all active:scale-[0.98] ${project.caseStudyPath ? 'cursor-pointer' : ''}`}
             >
-              <div className="relative h-56">
-                <img src={project.image} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
-                <div className="absolute bottom-6 left-8">
-                   <h3 className="text-2xl font-black text-white tracking-tighter uppercase font-display leading-none">{project.title}</h3>
-                </div>
-                {project.caseStudyPath && (
-                  <div className="absolute top-6 right-6 bg-blue-500/20 backdrop-blur-md border border-blue-500/30 px-3 py-1 rounded-full">
-                    <span className="text-[7px] font-black text-blue-400 uppercase tracking-widest">Case Study</span>
+              {project.image ? (
+                <div className="relative h-56">
+                  <img src={project.image} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-6 left-8">
+                     <h3 className="text-2xl font-black text-white tracking-tighter uppercase font-display leading-none">{project.title}</h3>
                   </div>
-                )}
-              </div>
+                  {project.caseStudyPath && (
+                    <div className="absolute top-6 right-6 bg-blue-500/20 backdrop-blur-md border border-blue-500/30 px-3 py-1 rounded-full">
+                      <span className="text-[7px] font-black text-blue-400 uppercase tracking-widest">Case Study</span>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="p-8 pb-0">
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-2xl font-black text-white tracking-tighter uppercase font-display leading-none">{project.title}</h3>
+                    {project.caseStudyPath && (
+                      <div className="bg-blue-500/20 backdrop-blur-md border border-blue-500/30 px-3 py-1 rounded-full">
+                        <span className="text-[7px] font-black text-blue-400 uppercase tracking-widest">Case Study</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
               <div className="p-8">
                 <p className="text-zinc-500 text-[10px] leading-relaxed mb-4 line-clamp-2">{project.description}</p>
                 <div className="flex flex-wrap gap-2">

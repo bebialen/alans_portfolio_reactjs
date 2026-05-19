@@ -47,35 +47,35 @@ export const PROJECTS_DATA: Project[] = [
     title: 'Parkochi',
     description: 'A smart parking discovery and booking application built with Flutter using BLoC architecture. Enables users to find, reserve, and manage parking slots efficiently.',
     tech: ['Flutter', 'BLoC', 'Clean Architecture', 'REST API'],
-    image: 'https://images.unsplash.com/photo-1551288049-bbda38a5f971?auto=format&fit=crop&q=80&w=800&h=400'
+    image: ''
   },
   {
     id: '3',
     title: 'Valet Parking App',
     description: 'Vehicle entry and exit automation system for parking staff. Developed using Kotlin and Jetpack Compose with MVVM architecture and Node.js backend integration.',
     tech: ['Kotlin', 'Jetpack Compose', 'MVVM', 'Node.js', 'MySQL', 'Figma'],
-    image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800&h=400'
+    image: ''
   },
   {
     id: '4',
     title: 'IP Device Monitoring App',
     description: 'A mobile application to monitor and manage network IP devices remotely. Built with Flutter using Provider state management and Node.js backend.',
     tech: ['Flutter', 'Provider', 'Node.js', 'MySQL', 'Figma'],
-    image: 'https://images.unsplash.com/photo-1551288049-bbda38a5f971?auto=format&fit=crop&q=80&w=800&h=400'
+    image: ''
   },
   {
     id: '5',
     title: 'Aura',
     description: "Aura is the ultimate performance tracking ecosystem designed for those who demand precision, clarity, and aesthetic excellence in their self-improvement journey. By seamlessly integrating fitness, nutrition, and habit tracking into a single, high-fidelity experience, Aura transforms raw data into a clear path toward your peak potential.",
     tech: ['React', 'Gemini API', 'Vercel', 'AI Integration', 'firebase'],
-    image: 'https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&q=80&w=800&h=400'
+    image: ''
   },
   {
     id: '6',
     title: 'Eduplay',
     description: 'A voice-based AI Quiz application designed for differently-abled users. Built using React and Gemini API. Selected in Top 10 out of 650 participants in a Carestack Hackathon.',
     tech: ['React', 'Gemini API', 'Vercel', 'AI Integration'],
-    image: 'https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&q=80&w=800&h=400'
+    image: ''
   }
 ];
 

@@ -218,9 +218,11 @@ const App: React.FC = () => {
                         {project.caseStudyPath ? 'Explore Case Study' : 'Case Study Coming Soon'} <ChevronRight className="w-5 h-5" />
                       </button>
                     </div>
-                    <div className="w-full lg:w-1/2 aspect-video rounded-2xl sm:rounded-3xl overflow-hidden relative border border-white/10 shadow-2xl order-first lg:order-last">
-                      <img src={project.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" />
-                    </div>
+                    {project.image && (
+                      <div className="w-full lg:w-1/2 aspect-video rounded-2xl sm:rounded-3xl overflow-hidden relative border border-white/10 shadow-2xl order-first lg:order-last">
+                        <img src={project.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" />
+                      </div>
+                    )}
                   </div>
                 </div>
               </ScrollReveal>
