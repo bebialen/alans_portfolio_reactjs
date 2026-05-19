@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { AppType } from '../types';
+import { AppType, Project } from '../types';
 import { APPS, PROJECTS_DATA, SKILLS_DATA, EXPERIENCE_DATA, ACHIEVEMENTS_DATA } from '../constants';
 import { Home, ArrowLeft, Send, Sparkles, Loader2, MessageSquare, Play, RefreshCw, Trophy, Gamepad2, Lock, Unlock, Zap, Star, Mail, Linkedin, Github } from 'lucide-react';
 import { askGeminiAboutDev } from '../services/geminiService';

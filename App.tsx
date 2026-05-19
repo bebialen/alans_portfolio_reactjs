@@ -13,15 +13,16 @@ import LoadingScreen from './components/LoadingScreen';
 import TechIcon from './components/TechIcon';
 import { motion, AnimatePresence } from 'framer-motion';
 import CareerIDE from './components/CareerIDE';
+import CaseStudyScreen from './components/CaseStudyScreen';
+import { Project } from './types';
 import { BackgroundPaths } from "@/components/ui/background-paths";
-   2
-   3 // Usage
-   4 
+
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCaseStudy, setSelectedCaseStudy] = useState<Project | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
@@ -64,7 +65,16 @@ const App: React.FC = () => {
   return (
     <div className="w-full h-screen bg-[#050505] flex flex-col lg:flex-row relative overflow-hidden text-white overscroll-none">
       <LoadingScreen onComplete={() => setIsLoading(false)} />
-        {/* <CareerIDE/> */}
+      
+      <AnimatePresence mode="wait">
+        {selectedCaseStudy && (
+          <CaseStudyScreen 
+            project={selectedCaseStudy} 
+            onClose={() => setSelectedCaseStudy(null)} 
+          />
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {!isLoading && (
           <motion.div
@@ -201,8 +211,11 @@ const App: React.FC = () => {
 
                       <h3 className="text-2xl sm:text-4xl font-black text-white mb-4 sm:mb-6 uppercase tracking-tight font-display">{project.title}</h3>
                       <p className="text-zinc-400 leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg">{project.description}</p>
-                      <button className="flex items-center gap-3 text-white font-extrabold text-xs group-hover:text-blue-400 transition-colors uppercase tracking-[0.2em]">
-                        Explore Case Study <ChevronRight className="w-5 h-5" />
+                      <button 
+                        onClick={() => project.caseStudyPath && setSelectedCaseStudy(project)}
+                        className={`flex items-center gap-3 font-extrabold text-xs transition-colors uppercase tracking-[0.2em] ${project.caseStudyPath ? 'text-white group-hover:text-blue-400' : 'text-zinc-600 cursor-not-allowed'}`}
+                      >
+                        {project.caseStudyPath ? 'Explore Case Study' : 'Case Study Coming Soon'} <ChevronRight className="w-5 h-5" />
                       </button>
                     </div>
                     <div className="w-full lg:w-1/2 aspect-video rounded-2xl sm:rounded-3xl overflow-hidden relative border border-white/10 shadow-2xl order-first lg:order-last">

@@ -8,7 +8,7 @@
 
 The **KIMS Centralized Valet System** is a high-performance, enterprise-grade logistics solution designed to streamline, track, and optimize high-volume valet parking operations across an expansive campus. By transitioning from fragmented manual tracking to a highly coordinated **Hub-and-Spoke model**, the platform ensures real-time vehicle tracking, optimized driver workflows, and a frictionless experience for visitors.
 
-* **Role:** Lead Mobile Application Developer
+* **Role:** Lead Mobile Application & Web Developer
 * **Architecture:** Multi-tenant Hub-and-Spoke (Desktop Central Control + Tablet Field Operations)
 * **Key Focus:** Real-time state synchronization, optimized tablet UI/UX, and driver assignment algorithms.
 
@@ -28,20 +28,7 @@ Large-scale medical and commercial campuses face volatile traffic influxes, lead
 
 To solve these operational bottlenecks, the system was designed around a centralized, synchronized architecture split cleanly across operational layers:
 
-```
-                  ┌────────────────────────┐
-                  │      Desktop Hub       │
-                  │   (Central Control)    │
-                  └───────────┬────────────┘
-                              │
-              ┌───────────────┼───────────────┐
-              ▼               ▼               ▼
-        ┌───────────┐   ┌───────────┐   ┌───────────┐
-        │  Tablet   │   │  Tablet   │   │  Tablet   │
-        │  Spoke 1  │   │  Spoke 2  │   │  Spoke 3  │
-        └───────────┘   └───────────┘   └───────────┘
 
-```
 
 ### 1. The Desktop Hub (Central Control)
 
