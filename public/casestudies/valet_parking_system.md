@@ -49,9 +49,9 @@ Vehicles transition through strict, deterministic states to maintain data integr
 | State | Responsibility | Trigger Action |
 | --- | --- | --- |
 | **Intake / Token Generated** | Hub / Entry Spoke | Customer hands over vehicle; SMS notification triggered to owner. |
-| **Driver Assigned** | System / Operator | Automated or manual dispatch of field driver to the vehicle. |
+| **Driver Assigned** | System / Operator | Dispatch of field driver to the vehicle. |
 | **Parked & Logged** | Field Spoke | Driver parks car, logs exact bay coordinates, and secures keys. |
-| **Retrieval Requested** | Customer / Hub | Digital or manual request initiated; car status moves to dispatch. |
+| **Retrieval Requested(car call)** | Customer / Hub | Digital or manual request initiated; car status moves to dispatch. |
 | **Handed Over** | Exit Spoke | Verification of payment/token; vehicle returned to owner. |
 
 ### Optimized Field UI & Performance
@@ -59,12 +59,10 @@ Vehicles transition through strict, deterministic states to maintain data integr
 Because field operators work in fast-paced, high-glare outdoor environments, the mobile/tablet application prioritized high-contrast, minimalist design principles:
 
 * **Touch Target Optimization:** Oversized interactive components designed to minimize input errors by operators wearing gloves or moving quickly.
-* **Low Latency Updates:** Optimized state synchronization to handle localized network drops without losing critical transit data.
+
 * **Automated SMS Workflow:** Immediate, automated text alerts sent to customers upon intake and retrieval readiness, reducing vehicle dwell time at the exit gate.
 
-### Enterprise System Integration
 
-The backend infrastructure coordinates closely with underlying enterprise management systems (such as Odoo ticket tracking) to ensure that billing, maintenance logs, and operational tickets remain unified under a single source of truth.
 
 ---
 
@@ -74,7 +72,7 @@ Following initial deployment and structured trial runs, the platform achieved si
 
 > **Key Performance Indicators:**
 > * **Turnaround Efficiency:** Significantly reduced average vehicle retrieval times through deterministic driver routing and precise bay mapping.
-> * **Data Accountability:** Eliminated misplaced keys and unlogged vehicles by enforcing hard state transitions on the mobile interface.
+
 > * **User Adoption:** Delivered a frictionless learning curve for field staff via a streamlined, ultra-clean mobile layout that stripped out visual noise in favor of high-priority actions.
 > 
 >
