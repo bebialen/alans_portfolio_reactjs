@@ -8,6 +8,13 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        proxy: {
+          '/leetcode-api': {
+            target: 'https://leetcode.com',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/leetcode-api/, '/graphql'),
+          },
+        },
       },
       plugins: [react()],
       define: {

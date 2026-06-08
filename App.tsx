@@ -16,6 +16,7 @@ import CareerIDE from './components/CareerIDE';
 import CaseStudyScreen from './components/CaseStudyScreen';
 import { Project } from './types';
 import { BackgroundPaths } from "@/components/ui/background-paths";
+import LeetCodeHeatmap from './components/LeetCodeHeatmap';
 
 
 const App: React.FC = () => {
@@ -335,6 +336,12 @@ const App: React.FC = () => {
                 </div>
               </ScrollReveal>
             ))}
+          </div>
+
+          <div className="mt-20">
+            <ScrollReveal>
+              <LeetCodeHeatmap />
+            </ScrollReveal>
           </div>
 
           <ScrollReveal>
