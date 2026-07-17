@@ -4,7 +4,7 @@ import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, PerspectiveCamera, ContactShadows } from '@react-three/drei';
 import PhoneModel from './components/PhoneModel';
-import { Github, Linkedin, Twitter, Download, ChevronRight, LayoutGrid, History, Trophy, Mail, Menu, X, BookOpen, Clock } from 'lucide-react';
+import { Github, Linkedin, Twitter, Download, ChevronRight, LayoutGrid, History, Trophy, Mail, Menu, X, BookOpen, Clock, List } from 'lucide-react';
 import { PROJECTS_DATA, EXPERIENCE_DATA, ACHIEVEMENTS_DATA, BLOGS_DATA } from './constants';
 import HeroVisual from './components/HeroVisual';
 import TerminalHero from './components/TerminalHero';
@@ -24,6 +24,7 @@ const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<Project | null>(null);
+  const [viewMode, setViewMode] = useState<'top' | 'all'>('top');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
@@ -189,46 +190,164 @@ const App: React.FC = () => {
         {/* Section 2: Projects */}
         <section id="projects" className="min-h-screen p-6 sm:p-12 lg:p-24 bg-zinc-950/30">
           <ScrollReveal>
-            <div className="mb-12 sm:mb-20">
-              <p className="text-blue-500 font-black text-[10px] tracking-[0.4em] uppercase mb-4">Selected Portfolio</p>
-              <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black text-white leading-none tracking-tighter font-display uppercase">FEATURED WORKS</h2>
+            <div className="flex flex-col items-start gap-6 mb-12 sm:mb-20">
+              <div>
+                <p className="text-blue-500 font-black text-[10px] tracking-[0.4em] uppercase mb-4">Selected Portfolio</p>
+                <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black text-white leading-none tracking-tighter font-display uppercase">FEATURED WORKS</h2>
+              </div>
+              
+              {/* Modern View Switcher */}
+              <div className="flex items-center gap-2 bg-zinc-900/60 backdrop-blur-md border border-white/5 p-1 rounded-full shadow-md">
+                <button
+                  onClick={() => setViewMode('top')}
+                  className={`flex items-center gap-2 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-300 ${
+                    viewMode === 'top'
+                      ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  <List className="w-3.5 h-3.5" /> Top
+                </button>
+                <button
+                  onClick={() => setViewMode('all')}
+                  className={`flex items-center gap-2 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-300 ${
+                    viewMode === 'all'
+                      ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  <LayoutGrid className="w-3.5 h-3.5" /> All
+                </button>
+              </div>
             </div>
           </ScrollReveal>
 
-          <div className="grid gap-8 sm:gap-16">
-            {PROJECTS_DATA.map((project, index) => (
-              <ScrollReveal key={project.id} delay={index * 0.1}>
-                <div className="group relative bg-zinc-900/40 rounded-[2rem] sm:rounded-[3rem] border border-white/5 p-6 sm:p-10 lg:p-14 transition-all hover:bg-zinc-900/60 overflow-hidden shadow-lg">
-                  <div className="flex flex-col lg:flex-row gap-8 sm:gap-12 items-center">
-                    <div className="flex-1 w-full">
-                      <div className="flex flex-wrap gap-2 mb-6 sm:mb-8">
-                        {project.tech.map(t => (
-                          <span key={t} className="flex items-center gap-1.5 text-[8px] sm:text-[9px] font-black bg-zinc-800 text-zinc-500 px-3 sm:px-4 py-1.5 rounded-full border border-white/5 uppercase tracking-wider">
-                            <TechIcon name={t} className="w-3 h-3" />
-                            {t}
-                          </span>
-                        ))}
-                      </div>
+          <AnimatePresence mode="wait">
+            {viewMode === 'top' ? (
+              <motion.div 
+                key="top-view"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="grid gap-8 sm:gap-16"
+              >
+                {PROJECTS_DATA.map((project, index) => (
+                  <ScrollReveal key={project.id} delay={index * 0.1}>
+                    <div className="group relative bg-zinc-900/40 rounded-[2rem] sm:rounded-[3rem] border border-white/5 p-6 sm:p-10 lg:p-14 transition-all hover:bg-zinc-900/60 overflow-hidden shadow-lg">
+                      <div className="flex flex-col lg:flex-row gap-8 sm:gap-12 items-center">
+                        <div className="flex-1 w-full">
+                          <div className="flex flex-wrap gap-2 mb-6 sm:mb-8">
+                            {project.tech.map(t => (
+                              <span key={t} className="flex items-center gap-1.5 text-[8px] sm:text-[9px] font-black bg-zinc-800 text-zinc-500 px-3 sm:px-4 py-1.5 rounded-full border border-white/5 uppercase tracking-wider">
+                                <TechIcon name={t} className="w-3 h-3" />
+                                {t}
+                              </span>
+                            ))}
+                          </div>
 
-                      <h3 className="text-2xl sm:text-4xl font-black text-white mb-4 sm:mb-6 uppercase tracking-tight font-display">{project.title}</h3>
-                      <p className="text-zinc-400 leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg">{project.description}</p>
-                      <button 
-                        onClick={() => project.caseStudyPath && setSelectedCaseStudy(project)}
-                        className={`flex items-center gap-3 font-extrabold text-xs transition-colors uppercase tracking-[0.2em] ${project.caseStudyPath ? 'text-white group-hover:text-blue-400' : 'text-zinc-600 cursor-not-allowed'}`}
-                      >
-                        {project.caseStudyPath ? 'Explore Case Study' : 'Case Study Coming Soon'} <ChevronRight className="w-5 h-5" />
-                      </button>
-                    </div>
-                    {project.image && (
-                      <div className="w-full lg:w-1/2 aspect-video rounded-2xl sm:rounded-3xl overflow-hidden relative border border-white/10 shadow-2xl order-first lg:order-last">
-                        <img src={project.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" />
+                          <h3 className="text-2xl sm:text-4xl font-black text-white mb-4 sm:mb-6 uppercase tracking-tight font-display">{project.title}</h3>
+                          <p className="text-zinc-400 leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg">{project.description}</p>
+                          <button 
+                            onClick={() => project.caseStudyPath && setSelectedCaseStudy(project)}
+                            className={`flex items-center gap-3 font-extrabold text-xs transition-colors uppercase tracking-[0.2em] ${project.caseStudyPath ? 'text-white group-hover:text-blue-400' : 'text-zinc-600 cursor-not-allowed'}`}
+                          >
+                            {project.caseStudyPath ? 'Explore Case Study' : 'Case Study Coming Soon'} <ChevronRight className="w-5 h-5" />
+                          </button>
+                        </div>
+                        {project.image && (
+                          <div className="w-full lg:w-1/2 aspect-video rounded-2xl sm:rounded-3xl overflow-hidden relative border border-white/10 shadow-2xl order-first lg:order-last">
+                            <img src={project.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" />
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="all-view"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+              >
+                {PROJECTS_DATA.map((project, index) => {
+                  const isClickable = !!project.caseStudyPath;
+                  return (
+                    <ScrollReveal key={project.id} delay={index * 0.05}>
+                      <div
+                        onClick={() => isClickable && setSelectedCaseStudy(project)}
+                        className={`group relative aspect-[4/3] rounded-[2rem] border overflow-hidden transition-all duration-500 shadow-lg flex flex-col justify-end p-6 sm:p-8 ${
+                          isClickable 
+                            ? 'border-white/5 bg-zinc-900/20 hover:bg-zinc-900/40 cursor-pointer' 
+                            : 'border-white/5 bg-zinc-900/10 opacity-70 cursor-not-allowed'
+                        }`}
+                      >
+                        {/* Case Study Badge */}
+                        {isClickable && (
+                          <div className="absolute top-6 right-6 bg-blue-500/25 backdrop-blur-md border border-blue-500/30 px-3 py-1 rounded-full z-10 shadow-md">
+                            <span className="text-[7.5px] font-black text-blue-300 uppercase tracking-widest">Case Study</span>
+                          </div>
+                        )}
+
+                        {/* Background Image */}
+                        {project.image && (
+                          <div className="absolute inset-0 z-0">
+                            <img 
+                              src={project.image} 
+                              alt={project.title}
+                              className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent group-hover:via-black/20 transition-all duration-500"></div>
+                          </div>
+                        )}
+
+                        {/* Content */}
+                        <div className="relative z-10 w-full flex flex-col">
+                          {/* Badges/Tags */}
+                          <div className="flex flex-wrap gap-1.5 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            {project.tech.slice(0, 3).map((t) => (
+                              <span key={t} className="text-[7.5px] font-black bg-zinc-950/80 text-zinc-400 px-2.5 py-1 rounded-full border border-white/5 uppercase tracking-wider flex items-center gap-1">
+                                <TechIcon name={t} className="w-2.5 h-2.5" />
+                                {t}
+                              </span>
+                            ))}
+                            {project.tech.length > 3 && (
+                              <span className="text-[7.5px] font-black bg-zinc-950/80 text-zinc-400 px-2.5 py-1 rounded-full border border-white/5 uppercase tracking-wider">
+                                +{project.tech.length - 3}
+                              </span>
+                            )}
+                          </div>
+
+                          <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight font-display mb-2 group-hover:text-blue-400 transition-colors leading-tight">
+                            {project.title}
+                          </h3>
+                          
+                          <p className="text-zinc-400 text-xs line-clamp-2 mb-4 group-hover:text-zinc-300 transition-colors leading-relaxed">
+                            {project.description}
+                          </p>
+
+                          <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 duration-300 mt-auto">
+                            {isClickable ? (
+                              <>
+                                <span className="text-blue-400">Explore Case Study</span>
+                                <ChevronRight className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
+                              </>
+                            ) : (
+                              <span className="text-zinc-500">Case Study Coming Soon</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </ScrollReveal>
+                  );
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </section>
 
         {/* Section 3: Experience */}
