@@ -29,33 +29,90 @@ const LeetCodeHeatmap: React.FC = () => {
   const heatmapData = useMemo(() => {
     if (!stats) return [];
     
-    const data: HeatmapData[] = [];
+    const data: (HeatmapData | null)[] = [];
     const today = new Date();
     
-    // Create a map for quick lookup
-    const submissionMap = stats.submissionCalendar;
+    // Get the current date in UTC, set to midnight UTC
+    const todayUTC = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+    
+    // Calculate oldest date (1st of the current month of this year)
+    const oldestDate = new Date(Date.UTC(todayUTC.getUTCFullYear(), todayUTC.getUTCMonth(), 1));
+    
+    // Day of week for oldest date (0 = Sunday, 1 = Monday, etc.)
+    const oldestDayOfWeek = oldestDate.getUTCDay();
+    
+    // Pad the beginning to start on Sunday
+    for (let i = 0; i < oldestDayOfWeek; i++) {
+      data.push(null);
+    }
+    
+    // Create a map of YYYY-MM-DD -> count using UTC date strings
+    const submissionMap: Record<string, number> = {};
+    Object.entries(stats.submissionCalendar).forEach(([timestampStr, count]) => {
+      const timestamp = parseInt(timestampStr, 10);
+      if (!isNaN(timestamp)) {
+        const date = new Date(timestamp * 1000);
+        const dateString = date.toISOString().split('T')[0];
+        submissionMap[dateString] = (submissionMap[dateString] || 0) + count;
+      }
+    });
 
-    for (let i = 364; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(today.getDate() - i);
+    const timeDiff = todayUTC.getTime() - oldestDate.getTime();
+    const totalDays = Math.round(timeDiff / (1000 * 60 * 60 * 24));
+
+    for (let i = totalDays; i >= 0; i--) {
+      const date = new Date(todayUTC);
+      date.setUTCDate(todayUTC.getUTCDate() - i);
       const dateString = date.toISOString().split('T')[0];
       
-      // LeetCode timestamps are in seconds, so we need to match carefully
-      // or convert our date to a start-of-day timestamp
-      const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() / 1000;
-      
-      // LeetCode's calendar might not align perfectly with start-of-day
-      // It's safer to check a range or find the nearest timestamp
-      // But usually, they are floored to the day.
-      const count = submissionMap[Math.floor(startOfDay).toString()] || 0;
+      const count = submissionMap[dateString] || 0;
       
       data.push({
         date: dateString,
         count
       });
     }
+    
+    // Pad the end to end on Saturday
+    const todayDayOfWeek = todayUTC.getUTCDay();
+    const padEnd = 6 - todayDayOfWeek;
+    for (let i = 0; i < padEnd; i++) {
+      data.push(null);
+    }
+    
     return data;
   }, [stats]);
+
+  const monthLabels = useMemo(() => {
+    if (heatmapData.length === 0) return [];
+    
+    // Find the oldest date of the calendar (the Sunday of the first week)
+    const today = new Date();
+    const todayUTC = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+    const oldestDate = new Date(Date.UTC(todayUTC.getUTCFullYear(), todayUTC.getUTCMonth(), 1));
+    const oldestDayOfWeek = oldestDate.getUTCDay();
+    const startSunday = new Date(oldestDate);
+    startSunday.setUTCDate(oldestDate.getUTCDate() - oldestDayOfWeek);
+    
+    const labels: { colIndex: number; label: string }[] = [];
+    let lastMonth = '';
+    
+    // Total weeks is heatmapData.length / 7. Let's iterate over each week/column.
+    const totalWeeks = Math.ceil(heatmapData.length / 7);
+    for (let col = 0; col < totalWeeks; col++) {
+      // Find the date of the Wednesday in this week to determine the month
+      const middleOfWeek = new Date(startSunday);
+      middleOfWeek.setUTCDate(startSunday.getUTCDate() + col * 7 + 3);
+      const month = middleOfWeek.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' });
+      
+      if (month !== lastMonth) {
+        labels.push({ colIndex: col, label: month });
+        lastMonth = month;
+      }
+    }
+    
+    return labels;
+  }, [heatmapData]);
 
   const displayStats = useMemo(() => {
     if (!stats) return [
@@ -88,6 +145,8 @@ const LeetCodeHeatmap: React.FC = () => {
       </div>
     );
   }
+
+  const totalWeeks = Math.ceil(heatmapData.length / 7);
 
   return (
     <div className="w-full bg-zinc-900/40 rounded-[2.5rem] border border-white/5 p-8 sm:p-12 overflow-hidden shadow-2xl backdrop-blur-sm">
@@ -133,37 +192,83 @@ const LeetCodeHeatmap: React.FC = () => {
               </div>
             </div>
 
-            <div className="overflow-x-auto no-scrollbar">
-              <div className="grid grid-flow-col grid-rows-7 gap-1.5 min-w-[700px]">
-                {heatmapData.map((day, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: i * 0.0005 }}
-                    className={`w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-sm ${getColor(day.count)} transition-colors hover:ring-2 hover:ring-white/20 relative group`}
-                  >
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-zinc-800 text-white text-[8px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 border border-white/10">
-                      {day.count} submissions on {day.date}
-                    </div>
-                  </motion.div>
-                ))}
+            {/* Heatmap Grid & Weekdays */}
+            <div className="flex gap-2 select-none">
+              {/* Day Labels on the Left */}
+              <div className="grid grid-rows-7 gap-1.5 text-[8px] font-black text-zinc-600 uppercase pt-[1.5px] pr-1 select-none">
+                <div className="h-3 sm:h-3.5" />
+                <div className="flex items-center h-3 sm:h-3.5">Mon</div>
+                <div className="h-3 sm:h-3.5" />
+                <div className="flex items-center h-3 sm:h-3.5">Wed</div>
+                <div className="h-3 sm:h-3.5" />
+                <div className="flex items-center h-3 sm:h-3.5">Fri</div>
+                <div className="h-3 sm:h-3.5" />
               </div>
-            </div>
-            
-            <div className="mt-4 flex justify-between text-[9px] font-bold text-zinc-500 uppercase tracking-widest">
-              <span>Jan</span>
-              <span>Feb</span>
-              <span>Mar</span>
-              <span>Apr</span>
-              <span>May</span>
-              <span>Jun</span>
-              <span>Jul</span>
-              <span>Aug</span>
-              <span>Sep</span>
-              <span>Oct</span>
-              <span>Nov</span>
-              <span>Dec</span>
+
+              {/* Heatmap & Month Labels */}
+              <div className="flex-1 overflow-x-auto no-scrollbar">
+                <div className="w-fit">
+                  {/* Month Labels at the top (Mobile) */}
+                  <div 
+                    className="grid gap-1.5 text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-1.5 sm:hidden w-fit"
+                    style={{ 
+                      gridTemplateColumns: `repeat(${totalWeeks}, 12px)`,
+                    }}
+                  >
+                    {monthLabels.map((ml, idx) => (
+                      <div
+                        key={idx}
+                        className="w-0 overflow-visible whitespace-nowrap"
+                        style={{ gridColumnStart: ml.colIndex + 1 }}
+                      >
+                        {ml.label}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Month Labels at the top (Desktop) */}
+                  <div 
+                    className="hidden sm:grid gap-1.5 text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-1.5 w-fit"
+                    style={{ 
+                      gridTemplateColumns: `repeat(${totalWeeks}, 14px)`,
+                    }}
+                  >
+                    {monthLabels.map((ml, idx) => (
+                      <div
+                        key={idx}
+                        className="w-0 overflow-visible whitespace-nowrap"
+                        style={{ gridColumnStart: ml.colIndex + 1 }}
+                      >
+                        {ml.label}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Heatmap Grid */}
+                  <div className="grid grid-flow-col grid-rows-7 gap-1.5 w-fit">
+                    {heatmapData.map((day, i) => {
+                      if (!day) {
+                        return (
+                          <div key={`empty-${i}`} className="w-3 h-3 sm:w-3.5 sm:h-3.5 bg-transparent" />
+                        );
+                      }
+                      return (
+                        <motion.div
+                          key={day.date}
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ delay: i * 0.0005 }}
+                          className={`w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-sm ${getColor(day.count)} transition-colors hover:ring-2 hover:ring-white/20 relative group`}
+                        >
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-zinc-800 text-white text-[8px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 border border-white/10 shadow-xl">
+                            {day.count} submissions on {day.date}
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
