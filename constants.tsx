@@ -35,11 +35,19 @@ export const APPS = [
 
 export const PROJECTS_DATA: Project[] = [
   {
+    id: 'cuckoo-audio',
+    title: 'Cuckoo Audio',
+    description: 'An Android, Oboe-backed real-time DSP library. Features a Kotlin API, a lock-free processing graph through JNI, and real-time audio thread safety.',
+    tech: ['Kotlin', 'C++', 'Oboe', 'JNI', 'Android', 'DSP'],
+    image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=800&h=400',
+    caseStudyPath: '/casestudies/cuckoo_audio.md'
+  },
+  {
     id: '1',
     title: 'Valet Parking System',
     description: 'A high-performance, enterprise-grade logistics solution designed to optimize high-volume valet parking operations using a Hub-and-Spoke model.',
     tech: ['Kotlin', 'Angular', 'Node.js', 'MySQL', 'Firebase', 'MVVM'],
-    image: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&q=80&w=800&h=400',
+    image: '/projectimages/valetparking_system.png',
     caseStudyPath: '/casestudies/valet_parking_system.md'
   },
   {
@@ -96,7 +104,7 @@ export const EXPERIENCE_DATA = [
 
 export const ACHIEVEMENTS_DATA = [
   { label: 'Experience', value: '2+ Years', icon: <Star className="w-6 h-6 text-yellow-500" /> },
-  { label: 'Projects Built', value: '6+', icon: <Users className="w-6 h-6 text-blue-500" /> },
+  { label: 'Projects Built', value: '7+', icon: <Users className="w-6 h-6 text-blue-500" /> },
   { label: 'Hackathon Finalist', value: 'Top 10/650', icon: <Award className="w-6 h-6 text-purple-500" /> },
   { label: 'Tech Stack', value: 'Flutter • React • Kotlin', icon: <Code2 className="w-6 h-6 text-green-500" /> }
 ];

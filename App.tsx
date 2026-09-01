@@ -232,7 +232,7 @@ const App: React.FC = () => {
                 transition={{ duration: 0.3 }}
                 className="grid gap-8 sm:gap-16"
               >
-                {PROJECTS_DATA.map((project, index) => (
+                {PROJECTS_DATA.slice(0, 3).map((project, index) => (
                   <ScrollReveal key={project.id} delay={index * 0.1}>
                     <div className="group relative bg-zinc-900/40 rounded-[2rem] sm:rounded-[3rem] border border-white/5 p-6 sm:p-10 lg:p-14 transition-all hover:bg-zinc-900/60 overflow-hidden shadow-lg">
                       <div className="flex flex-col lg:flex-row gap-8 sm:gap-12 items-center">
@@ -457,11 +457,11 @@ const App: React.FC = () => {
             ))}
           </div>
 
-          <div className="mt-20">
+          {/* <div className="mt-20">
             <ScrollReveal>
               <LeetCodeHeatmap />
             </ScrollReveal>
-          </div>
+          </div> */}
 
           <ScrollReveal>
             <div className="mt-20 sm:mt-32 p-8 sm:p-14 bg-gradient-to-br from-zinc-900 to-black rounded-[2.5rem] sm:rounded-[4rem] border border-white/10 flex flex-col lg:flex-row items-center gap-10 lg:gap-12 relative overflow-hidden group shadow-lg">

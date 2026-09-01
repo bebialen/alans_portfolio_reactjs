@@ -11,6 +11,114 @@ interface CaseStudyScreenProps {
   onClose: () => void;
 }
 
+const MermaidRenderer: React.FC<{ chart: string }> = ({ chart }) => {
+  if (chart.includes('AudioGraph') || chart.includes('AudioNode')) {
+    return (
+      <div className="my-8 p-6 bg-zinc-900/30 border border-white/5 rounded-[2rem] flex flex-col items-center justify-center gap-6 overflow-hidden">
+        <h4 className="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2">System Processing Graph</h4>
+        
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-3xl">
+          {/* Kotlin DSL Layer */}
+          <div className="flex flex-col items-center w-full md:w-auto">
+            <div className="px-5 py-4 bg-blue-500/10 border border-blue-500/20 rounded-2xl text-center w-full md:w-44 shadow-lg">
+              <span className="text-[8px] font-black text-blue-400 block uppercase tracking-widest mb-1">Kotlin API</span>
+              <span className="text-xs font-black text-white uppercase tracking-tight">Chain DSL</span>
+            </div>
+            <div className="h-6 w-px bg-zinc-800 md:hidden"></div>
+          </div>
+          
+          {/* Arrow / Bridge */}
+          <div className="hidden md:flex flex-col items-center text-zinc-600 gap-0.5">
+            <span className="text-[8px] font-mono font-black uppercase tracking-wider">JNI</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </div>
+          
+          {/* JNI Layer */}
+          <div className="flex flex-col items-center w-full md:w-auto">
+            <div className="px-5 py-4 bg-purple-500/10 border border-purple-500/20 rounded-2xl text-center w-full md:w-44 shadow-lg">
+              <span className="text-[8px] font-black text-purple-400 block uppercase tracking-widest mb-1">Bridge</span>
+              <span className="text-xs font-black text-white uppercase tracking-tight">JNI Interface</span>
+            </div>
+            <div className="h-6 w-px bg-zinc-800 md:hidden"></div>
+          </div>
+          
+          {/* Arrow */}
+          <div className="hidden md:flex items-center text-zinc-600">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </div>
+          
+          {/* AudioGraph */}
+          <div className="flex flex-col items-center w-full md:w-auto relative">
+            {/* Oboe Input connection */}
+            <div className="absolute -top-16 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center">
+              <div className="bg-orange-500/10 border border-orange-500/20 px-3 py-1.5 rounded-full text-[8px] font-black text-orange-400 tracking-wider whitespace-nowrap shadow-md">Oboe Callback</div>
+              <div className="w-px h-4 bg-orange-500/30"></div>
+            </div>
+            
+            <div className="px-5 py-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-center w-full md:w-44 shadow-lg">
+              <span className="text-[8px] font-black text-emerald-400 block uppercase tracking-widest mb-1">C++ Core</span>
+              <span className="text-xs font-black text-white uppercase tracking-tight">AudioGraph</span>
+            </div>
+            <div className="h-6 w-px bg-zinc-800 md:hidden"></div>
+          </div>
+          
+          {/* Arrow */}
+          <div className="hidden md:flex items-center text-zinc-600">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </div>
+          
+          {/* AudioNode Chain */}
+          <div className="flex flex-col items-center w-full md:w-auto">
+            <div className="px-5 py-4 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl text-center w-full md:w-44 shadow-lg">
+              <span className="text-[8px] font-black text-indigo-400 block uppercase tracking-widest mb-1">DSP Chain</span>
+              <span className="text-xs font-black text-white uppercase tracking-tight">AudioNodes</span>
+            </div>
+            <div className="h-6 w-px bg-zinc-800 md:hidden"></div>
+          </div>
+          
+          {/* Arrow */}
+          <div className="hidden md:flex items-center text-zinc-600">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </div>
+          
+          {/* Android Output */}
+          <div className="px-5 py-4 bg-rose-500/10 border border-rose-500/20 rounded-2xl text-center w-full md:w-44 shadow-lg">
+            <span className="text-[8px] font-black text-rose-400 block uppercase tracking-widest mb-1">Hardware</span>
+            <span className="text-xs font-black text-white uppercase tracking-tight">Android Output</span>
+          </div>
+        </div>
+        
+        {/* Secondary path (Analysis snapshot) */}
+        <div className="flex flex-col items-center mt-2 w-full">
+          <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-zinc-500">
+            <span>snapshot collector (non-blocking)</span>
+            <span className="w-2 h-2 rounded-full bg-yellow-500 animate-ping"></span>
+          </div>
+          <div className="w-px h-6 border-l border-dashed border-zinc-700 my-1"></div>
+          <div className="px-5 py-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-center w-full md:w-64 shadow-lg">
+            <span className="text-[8px] font-black text-yellow-400 block uppercase tracking-widest mb-1">Telemetry</span>
+            <span className="text-xs font-black text-white uppercase tracking-tight">Analysis Flow</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  return (
+    <pre className="bg-zinc-900 p-6 rounded-2xl overflow-x-auto border border-white/5 mb-8 text-sm font-mono text-zinc-300">
+      <code>{chart}</code>
+    </pre>
+  );
+};
+
 const CaseStudyScreen: React.FC<CaseStudyScreenProps> = ({ project, onClose }) => {
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(true);
@@ -169,18 +277,22 @@ The full technical deep dive is in development. For inquiries or collaboration d
                   th: ({node, ...props}) => <th className="bg-zinc-900 p-4 text-[10px] font-black uppercase tracking-widest text-zinc-500 border-b border-white/5" {...props} />,
                   td: ({node, ...props}) => <td className="p-4 text-sm text-zinc-400 border-b border-white/5" {...props} />,
                   hr: () => <hr className="border-white/5 my-12" />,
-                  code: ({node, className, children, ...props}) => {
-                    const isCodeBlock = /language-(\w+)/.test(className || '');
-                    return isCodeBlock ? (
-                      <code className={`${className} block bg-zinc-900 p-6 rounded-2xl overflow-x-auto border border-white/5 mb-8 text-sm font-mono text-zinc-300`} {...props}>
-                        {children}
-                      </code>
-                    ) : (
-                      <code className="bg-zinc-800 text-blue-400 px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
+                   code: ({node, className, children, ...props}) => {
+                     const isCodeBlock = /language-(\w+)/.test(className || '');
+                     const language = className ? className.replace('language-', '') : '';
+                     if (isCodeBlock && language === 'mermaid') {
+                       return <MermaidRenderer chart={String(children)} />;
+                     }
+                     return isCodeBlock ? (
+                       <code className={`${className} block bg-zinc-900 p-6 rounded-2xl overflow-x-auto border border-white/5 mb-8 text-sm font-mono text-zinc-300`} {...props}>
+                         {children}
+                       </code>
+                     ) : (
+                       <code className="bg-zinc-800 text-blue-400 px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
+                         {children}
+                       </code>
+                     );
+                   },
                   pre: ({node, children, ...props}) => <div className="not-prose">{children}</div>,
                 }}
               >
