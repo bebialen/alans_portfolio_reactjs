@@ -127,9 +127,15 @@ const App: React.FC = () => {
             </button>
           ))}
           <div className="flex gap-8 mt-12">
-            <Github className="w-6 h-6 text-zinc-500" />
-            <Linkedin className="w-6 h-6 text-zinc-500" />
-            <Twitter className="w-6 h-6 text-zinc-500" />
+            <a href="https://github.com/bebialen" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <Github className="w-6 h-6 text-zinc-500 hover:text-white transition-colors" />
+            </a>
+            <a href="https://www.linkedin.com/in/alan-bebido" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <Linkedin className="w-6 h-6 text-zinc-500 hover:text-white transition-colors" />
+            </a>
+            <a href="https://x.com/alanbebido" target="_blank" rel="noreferrer" aria-label="X">
+              <Twitter className="w-6 h-6 text-zinc-500 hover:text-white transition-colors" />
+            </a>
           </div>
         </div>
       </div>
@@ -474,9 +480,15 @@ const App: React.FC = () => {
                     CONTACT ME <Mail className="w-5 h-5" />
                   </button>
                   <div className="flex items-center gap-6">
-                    <Github className="w-6 h-6 text-zinc-500 hover:text-white transition-colors cursor-pointer" />
-                    <Linkedin className="w-6 h-6 text-zinc-500 hover:text-white transition-colors cursor-pointer" />
-                    <Twitter className="w-6 h-6 text-zinc-500 hover:text-white transition-colors cursor-pointer" />
+                    <a href="https://github.com/bebialen" target="_blank" rel="noreferrer" aria-label="GitHub">
+                      <Github className="w-6 h-6 text-zinc-500 hover:text-white transition-colors" />
+                    </a>
+                    <a href="https://www.linkedin.com/in/alan-bebido" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                      <Linkedin className="w-6 h-6 text-zinc-500 hover:text-white transition-colors" />
+                    </a>
+                    <a href="https://x.com/alanbebido" target="_blank" rel="noreferrer" aria-label="X">
+                      <Twitter className="w-6 h-6 text-zinc-500 hover:text-white transition-colors" />
+                    </a>
                   </div>
                 </div>
               </div>
