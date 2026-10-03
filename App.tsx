@@ -25,6 +25,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<Project | null>(null);
   const [viewMode, setViewMode] = useState<'top' | 'all'>('top');
+  const [isContactOpen, setIsContactOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
@@ -64,6 +65,15 @@ const App: React.FC = () => {
     setIsMenuOpen(false);
   };
 
+  const handleContactSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const subject = String(formData.get('subject') || 'Project inquiry');
+    const message = String(formData.get('message') || '');
+    window.location.href = `mailto:alanbebido2000@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+    setIsContactOpen(false);
+  };
+
   return (
     <div className="w-full h-screen bg-[#050505] flex flex-col lg:flex-row relative overflow-hidden text-white overscroll-none">
       <LoadingScreen onComplete={() => setIsLoading(false)} />
@@ -74,6 +84,86 @@ const App: React.FC = () => {
             project={selectedCaseStudy} 
             onClose={() => setSelectedCaseStudy(null)} 
           />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isContactOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm sm:p-6"
+            onClick={() => setIsContactOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 16, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16, scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="contact-dialog-title"
+              className="max-h-[calc(100vh-2rem)] w-full max-w-lg overflow-y-auto rounded-[2rem] border border-white/10 bg-zinc-950 p-6 shadow-2xl sm:max-h-[calc(100vh-3rem)] sm:rounded-[2.5rem] sm:p-10"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="mb-8 flex items-start justify-between gap-4">
+                <div>
+                  <p className="mb-2 text-[10px] font-black uppercase tracking-[0.25em] text-blue-400">Let's connect</p>
+                  <h2 id="contact-dialog-title" className="text-2xl font-black uppercase tracking-tight text-white sm:text-3xl">Send me a message</h2>
+                  <p className="mt-3 text-sm leading-relaxed text-zinc-500">Your email app will open with your message addressed to me.</p>
+                </div>
+                <button
+                  type="button"
+                  aria-label="Close contact dialog"
+                  onClick={() => setIsContactOpen(false)}
+                  className="shrink-0 rounded-full border border-white/10 p-2 text-zinc-500 transition-colors hover:text-white"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleContactSubmit} className="space-y-5">
+                <div>
+                  <label htmlFor="contact-subject" className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Subject</label>
+                  <input
+                    id="contact-subject"
+                    name="subject"
+                    type="text"
+                    defaultValue="Project inquiry"
+                    required
+                    className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="contact-message" className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Message</label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    rows={5}
+                    placeholder="Tell me a little about your project..."
+                    required
+                    className="w-full resize-y rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-blue-500"
+                  />
+                </div>
+                <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setIsContactOpen(false)}
+                    className="w-full rounded-full border border-white/10 px-6 py-3 text-xs font-black uppercase tracking-widest text-zinc-400 transition-colors hover:text-white sm:w-auto"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex w-full items-center justify-center gap-3 rounded-full bg-white px-6 py-3 text-xs font-black uppercase tracking-widest text-black transition-colors hover:bg-blue-400 sm:w-auto"
+                  >
+                    Open email <Mail className="h-4 w-4" />
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 
@@ -476,7 +566,11 @@ const App: React.FC = () => {
                 <h3 className="text-2xl sm:text-4xl font-black text-white mb-4 sm:mb-6 tracking-tight font-display uppercase">READY TO START A PROJECT?</h3>
                 <p className="text-zinc-500 mb-8 sm:mb-10 text-base sm:text-lg">Let's build something that millions will love using.</p>
                 <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 sm:gap-8">
-                  <button className="w-full sm:w-auto bg-white text-black px-10 py-4 sm:py-5 rounded-full font-black text-xs tracking-widest flex items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setIsContactOpen(true)}
+                    className="w-full sm:w-auto bg-white text-black px-10 py-4 sm:py-5 rounded-full font-black text-xs tracking-widest flex items-center justify-center gap-3 hover:bg-blue-400 transition-colors"
+                  >
                     CONTACT ME <Mail className="w-5 h-5" />
                   </button>
                   <div className="flex items-center gap-6">
